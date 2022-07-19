@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "650688513222",
+    "project_id": "eidtask-f55d4",
+    "storage_bucket": "eidtask-f55d4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650688513222:android:08b5f1aed3a03fecb743c7",
+        "android_client_info": {
+          "package_name": "com.example.tasky"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "650688513222-137ar8vrhas3jru1kagn1hkgj5b7h9s3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.tasky",
+            "certificate_hash": "c8ae272d2cb8160f3f9f92b14d372ad9be5522fe"
+          }
+        },
+        {
+          "client_id": "650688513222-c9nkjtfoctumiirdb58bgs3o828pcicj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgNaYz6KbNQEMXNurhBDAvKwvtI5VGFas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "650688513222-c9nkjtfoctumiirdb58bgs3o828pcicj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
