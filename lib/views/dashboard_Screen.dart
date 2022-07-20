@@ -6,7 +6,6 @@ import 'package:tasky/shared_component/firebase_services.dart';
 import 'package:tasky/shared_component/resuablescreen.dart';
 
 class DashboardScreen extends StatefulWidget {
-
   final bool check;
   const DashboardScreen(this.check, {Key? key}) : super(key: key);
 
@@ -17,6 +16,7 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey<ScaffoldState> _key = GlobalKey();
   final bool check;
+
 _DashboardScreenState(this.check);
 
   List<String> images = [
@@ -123,7 +123,7 @@ _DashboardScreenState(this.check);
                   ),
                 ),
                 Center(
-                    child:check==false? Text(" Logged in as ${FirebaseServices.getcurrentUseremail()}"):Text(" Logged in as ${FirebaseAuth.instance.currentUser!.phoneNumber}")),
+                    child:check==false? Text(" Logged in as ${FirebaseAuth.instance.currentUser!.displayName}")  :Text(" Logged in as ${FirebaseAuth.instance.currentUser!.phoneNumber}")),
                 MaterialButton(onPressed: () async {
 
                  // FirebaseServices.Signout();

@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:tasky/shared_component/helper.dart';
-import 'package:tasky/views/dashboard_Screen.dart';
+
+import 'package:twitter_login/twitter_login.dart';
 
 
 class FirebaseServices {
@@ -64,6 +65,7 @@ class FirebaseServices {
   googleSignOut() async {
     await _auth.signOut();
     await _googleSignIn.signOut();
+
 
   }
 
@@ -140,6 +142,30 @@ debugPrint(authCredential.user!.phoneNumber.toString());
     }
   }
 
+  void signInWithTwitter() async {
+
+    // Create a TwitterLogin instance
+    final twitterLogin = TwitterLogin(
+        apiKey: 'ERRcMFNecswIyar134sfxeG6z',
+        apiSecretKey: 'PP8SYd0NpoHHdeQQPRmtoS7sQLyhSia5dSVzsOOYoW09JVnkWK',
+        redirectURI: 'tasky-twitter-login://'
+    );
+
+    // Trigger the sign-in flow
+    await twitterLogin.login().then((value) async {
+
+      final twitterAuthCredential = TwitterAuthProvider.credential(
+        accessToken: value.authToken!,
+        secret: value.authTokenSecret!,
+      );
+
+
+      await _auth.signInWithCredential(twitterAuthCredential);
+
+    });
+
+  }
 }
+
 
 

@@ -1,8 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasky/shared_component/firebase_services.dart';
-import 'package:tasky/views/dashboard_Screen.dart';
+
 import 'package:tasky/views/log_in.dart';
 import 'package:tasky/views/phone_login.dart';
 
@@ -72,18 +72,16 @@ class Reusablescreen {
                                   child: Align(
                                     alignment: Alignment.bottomRight,
                                     child: GestureDetector(
-                                      onLongPress: ()
-                                      {
-
+                                      onLongPress: () {
                                         var snackk = const SnackBar(
-                                          content: Text('Aap soch rahai hongy k ye apple hai lekin ye apple nahi.. kya kre majboori hai .. '),
+                                          content: Text(
+                                              'Aap soch rahai hongy k ye apple hai lekin ye apple nahi.. kya kre majboori hai .. '),
                                         );
-                                        ScaffoldMessenger.of(context).showSnackBar(snackk);
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(snackk);
                                       },
-                                      onTap: ()
-                                      {
-FirebaseServices().signInWithGoogle();
-
+                                      onTap: () {
+                                        FirebaseServices().signInWithGoogle();
                                       },
                                       child: Container(
                                           width: 50.0,
@@ -107,10 +105,9 @@ FirebaseServices().signInWithGoogle();
                                   child: Align(
                                     alignment: Alignment.bottomLeft,
                                     child: InkWell(
-                                      onTap: ()
-                                      {
-                                        FirebaseServices().signInWithFacebook(context);
-
+                                      onTap: () {
+                                        FirebaseServices()
+                                            .signInWithFacebook(context);
                                       },
                                       child: Container(
                                           width: 50.0,
@@ -128,6 +125,28 @@ FirebaseServices().signInWithGoogle();
                                     ),
                                   ),
                                 ),
+                                Expanded(child:
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+
+                                  child: InkWell(
+                                    onTap: ()
+                                    {
+                 FirebaseServices().signInWithTwitter();
+                                    },
+                                    child: Container(
+                                        width: 50.0,
+                                        height: 45.0,
+                                        decoration: BoxDecoration(
+                                            border:
+                                            Border.all(color: Colors.red),
+                                            shape: BoxShape.rectangle,
+                                            borderRadius:
+                                            BorderRadius.circular(20)),
+                                        child:Center(child: Text(' Twitter'))
+                                    ),
+                                  ),
+                                ))
                               ],
                             ),
                           ))
@@ -176,7 +195,7 @@ FirebaseServices().signInWithGoogle();
                       ),
                     ),
                   ),
-                  Spacer(),
+                  const Spacer(),
                   const Expanded(
                     flex: 1,
                     child: Align(
@@ -218,19 +237,26 @@ FirebaseServices().signInWithGoogle();
                       ),
                     ),
                   ),
-                   Expanded(
-                     flex: 3,
-                     child: Align(
-                       child: SizedBox(
-                         height: 100,
-                       width: 300,
-                       child: MaterialButton(onPressed: (){
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>Phoneverfication()));
-
-                       },child: Text('Login with Phone'), color: Colors.white24, shape: Border.all(color: Colors.red),),
+                  Expanded(
+                    flex: 3,
+                    child: Align(
+                      child: SizedBox(
+                        height: 100,
+                        width: 300,
+                        child: MaterialButton(
+                          onPressed: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const Phoneverfication()));
+                          },
+                          child: Text('Login with Phone'),
+                          color: Colors.white24,
+                          shape: Border.all(color: Colors.red),
+                        ),
+                      ),
+                    ),
                   ),
-                     ),
-                   ),
                   Expanded(
                     flex: 4,
                     child: Align(
@@ -238,7 +264,7 @@ FirebaseServices().signInWithGoogle();
                         onTap: () async {
                           if (Titlename == "Sign Up") {
                             FirebaseServices.SighnUp(
-                                Semailcontroller, Spaswdcontroller,context);
+                                Semailcontroller, Spaswdcontroller, context);
                             // Navigator.push(context, MaterialPageRoute(builder: (context)=> LogIn() ));
                           }
                           if (Titlename == "Log In") {

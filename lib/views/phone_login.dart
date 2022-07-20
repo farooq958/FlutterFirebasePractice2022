@@ -38,6 +38,18 @@ class _PhoneverficationState extends State<Phoneverfication> {
               otpcontroller.text =   state.otpfetchedauto;
 
             }
+           if(state is FirebaseotpSentotpcodecheck)
+             {
+               Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen(true)));
+
+             }
+          if (state is FirebaseotpException)
+          {
+            var snackk= SnackBar(content: Text(state.msg!),);
+            ScaffoldMessenger.of(context).showSnackBar(snackk);
+
+
+          }
 
         },
         child: ListView(
@@ -75,6 +87,13 @@ class _PhoneverficationState extends State<Phoneverfication> {
                     border: Border.all(color: Colors.black)),
                 child: TextFormField(
                   controller: otpcontroller,
+
+                  onChanged: (e){
+                    if (e.length == 6 ) {
+                      context.read<FirebaseotpCubit>().verifyotpmanual(
+                          otpcontroller);
+                    }
+                  },
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     hintText: 'Your otp recieved',

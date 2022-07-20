@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:tasky/shared_component/firebase_services.dart';
 import 'package:tasky/shared_component/resuablescreen.dart';
 import 'package:tasky/views/dashboard_Screen.dart';
 
@@ -21,8 +22,10 @@ class _LogInState extends State<LogIn> {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return const DashboardScreen(false);
-            } else {
+
+                return const DashboardScreen(false);
+
+                } else {
               var reus = Reusablescreen();
               return reus.reusablescreens("Log In", context);
             }
