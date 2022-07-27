@@ -1,9 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tasky/cubitss/firebaseotp_cubit.dart';
 
-import '../shared_component/firebase_services.dart';
 import 'dashboard_Screen.dart';
 
 class Phoneverfication extends StatefulWidget {
@@ -22,35 +20,33 @@ class _PhoneverficationState extends State<Phoneverfication> {
     return Scaffold(
       body: BlocListener<FirebaseotpCubit, FirebaseotpState>(
         listener: (context, state) {
-          if(state is FirebaseotpInitial)
-            {
-
-  var snackk=const SnackBar(content: Text('validating Phone number Sending otp '),);
-  ScaffoldMessenger.of(context).showSnackBar(snackk);
-            }
-           if (state is FirebaseotpLoaded)
-            {
-              Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen(true)));
-
-            }
-           if (state is Firebaseotpautofetched)
-            {
-              otpcontroller.text =   state.otpfetchedauto;
-
-            }
-           if(state is FirebaseotpSentotpcodecheck)
-             {
-               Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen(true)));
-
-             }
-          if (state is FirebaseotpException)
-          {
-            var snackk= SnackBar(content: Text(state.msg!),);
+          if (state is FirebaseotpInitial) {
+            var snackk = const SnackBar(
+              content: Text('validating Phone number Sending otp '),
+            );
             ScaffoldMessenger.of(context).showSnackBar(snackk);
-
-
           }
-
+          if (state is FirebaseotpLoaded) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DashboardScreen(true)));
+          }
+          if (state is Firebaseotpautofetched) {
+            otpcontroller.text = state.otpfetchedauto;
+          }
+          if (state is FirebaseotpSentotpcodecheck) {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DashboardScreen(true)));
+          }
+          if (state is FirebaseotpException) {
+            var snackk = SnackBar(
+              content: Text(state.msg!),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackk);
+          }
         },
         child: ListView(
           children: [
@@ -73,7 +69,9 @@ class _PhoneverficationState extends State<Phoneverfication> {
             ),
             MaterialButton(
               onPressed: () {
-                context.read<FirebaseotpCubit>().fetchotp("+${phonecontroller.text}");
+                context
+                    .read<FirebaseotpCubit>()
+                    .fetchotp("+${phonecontroller.text}");
 
                 // FirebaseServices().fetchotp("+${phonecontroller.text}");
                 //  FirebaseServices().verify(otpcontroller, context);
@@ -87,11 +85,11 @@ class _PhoneverficationState extends State<Phoneverfication> {
                     border: Border.all(color: Colors.black)),
                 child: TextFormField(
                   controller: otpcontroller,
-
-                  onChanged: (e){
-                    if (e.length == 6 ) {
-                      context.read<FirebaseotpCubit>().verifyotpmanual(
-                          otpcontroller);
+                  onChanged: (e) {
+                    if (e.length == 6) {
+                      context
+                          .read<FirebaseotpCubit>()
+                          .verifyotpmanual(otpcontroller);
                     }
                   },
                   keyboardType: TextInputType.number,
@@ -99,7 +97,6 @@ class _PhoneverficationState extends State<Phoneverfication> {
                     hintText: 'Your otp recieved',
                   ),
                 )),
-
           ],
         ),
       ),

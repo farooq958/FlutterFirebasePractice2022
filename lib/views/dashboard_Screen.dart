@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasky/shared_component/firebase_services.dart';
 import 'package:tasky/shared_component/resuablescreen.dart';
+import 'package:tasky/views/group_chat_screen.dart';
+import 'package:tasky/views/invoices.dart';
+import 'package:tasky/views/product_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   final bool check;
@@ -14,7 +17,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  final GlobalKey<ScaffoldState> _key = GlobalKey();
+ // final GlobalKey<ScaffoldState> _key = GlobalKey();
   final bool check;
 
 _DashboardScreenState(this.check);
@@ -130,6 +133,49 @@ _DashboardScreenState(this.check);
                   FirebaseServices().googleSignOut();
 
                 } , color: Colors.red,child: const Text("Signout"),)
+
+                ,
+                (check== true)?
+                  Column(
+                    children: [
+                      MaterialButton(onPressed: (){
+Navigator.push(context, MaterialPageRoute(builder: (context)=>GroupChatScreen()));
+
+
+
+                       },
+
+                      color:  Colors.green,
+                      child: const Text('Join The group Chat '),
+                      ),
+                    ],
+                  )
+                    :
+
+
+                Column(
+                  children: [
+
+                    MaterialButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProductScreen()));
+                    },
+
+                      color: Colors.cyan,
+                      child: const Text('See Invoices '),
+                    ),
+                    MaterialButton(onPressed: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const InvoiceScreen()));
+                    },
+
+                      color: Colors.red,
+                      child: const Text('See Invoices '),
+                    ),
+                  ],
+                )
+
+
+
+
               ],
             ),
           ],
