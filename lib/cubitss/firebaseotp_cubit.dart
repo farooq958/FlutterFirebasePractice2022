@@ -3,70 +3,55 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 
 part 'firebaseotp_state.dart';
 
-class FirebaseotpCubit extends Cubit<FirebaseotpState> {
-  FirebaseotpCubit() : super(FirebaseotpInitial());
+class FirebaseOtpCubit extends Cubit<FirebaseOtpState> {
+  FirebaseOtpCubit() : super(FirebaseOtpInitial());
   final _auth = FirebaseAuth.instance;
-  late String otpfetchedauto;
+  late String otpFetchedAuto;
 
-  late String verrificationId;
+  late String verificationIdCheck;
 
-  fetchotp(String phonenumber) async {
-    emit(FirebaseotpInitial());
+  fetchOtp(String phoneNumber) async {
+    emit(FirebaseOtpInitial());
     await _auth.verifyPhoneNumber(
-      phoneNumber: phonenumber,
-
+      phoneNumber: phoneNumber,
       verificationCompleted: (PhoneAuthCredential credential) async {
-        otpfetchedauto = credential.smsCode.toString();
-        debugPrint(otpfetchedauto);
-        emit(Firebaseotpautofetched(otpfetchedauto: otpfetchedauto));
+        otpFetchedAuto = credential.smsCode.toString();
+        debugPrint(otpFetchedAuto);
+        emit(FirebaseOtpAutoFetched(otpFetchedAuto: otpFetchedAuto));
         await _auth.signInWithCredential(credential);
-        emit(FirebaseotpLoaded());
+        emit(FirebaseOtpLoaded());
       },
-
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
           debugPrint('The provided phone number is not valid.');
-          emit(FirebaseotpException(msg: e.message));
+          emit(FirebaseOtpException(msg: e.message));
         }
       },
-
       codeSent: (String verificationId, int? resendToken) async {
-        verrificationId = verificationId;
-
+        verificationIdCheck = verificationId;
 
         debugPrint('code send ');
       },
-
       codeAutoRetrievalTimeout: (String verificationId) {},
     );
   }
 
-  verifyotpmanual(otpcontroller) async
-  {
+  verifyOtpManual(otpController) async {
     try {
       var credential = PhoneAuthProvider.credential(
-          verificationId: verrificationId, smsCode: otpcontroller.text);
+          verificationId: verificationIdCheck, smsCode: otpController.text);
       await _auth.signInWithCredential(credential);
       emit(FirebaseotpSentotpcodecheck());
+    } catch (e) {
+      if (e is SocketException) {
+        emit(FirebaseOtpException(msg: e.message));
+      }
+      if (e is FirebaseAuthException) {
+        emit(FirebaseOtpException(msg: e.message));
+      }
     }
-
-
-  catch (e)
-  {
-  if(e is SocketException)
-  {
-    emit(FirebaseotpException(msg: e.message));
   }
-  if (e is FirebaseAuthException)
-    {
-      emit(FirebaseotpException(msg: e.message));
-
-    }
-
-  }
-}
 }

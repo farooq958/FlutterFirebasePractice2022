@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:meta/meta.dart';
 import 'package:tasky/data/repo/repoapi.dart';
 
 import '../../data/model.dart';
@@ -12,26 +11,18 @@ part 'productscubitcontroller_state.dart';
 class ProductscubitcontrollerCubit extends Cubit<ProductscubitcontrollerState> {
   ProductscubitcontrollerCubit() : super(ProductscubitcontrollerInitial());
 
-  getproduct()
-  async {
+  getProduct() async {
     try {
       emit(ProductscubitcontrollerInitial());
-      final Data = await repoapi.productList();
-      debugPrint(Data.toString());
-     emit(ListOfProductsLoaded(prod: Data));
-
+      final data = await RepoApi.productList();
+      debugPrint(data.toString());
+      emit(ListOfProductsLoaded(prod: data));
     } catch (e) {
-      if (e is SocketException)
-      {
-
-        emit(ListOfinternetissue());
+      if (e is SocketException) {
+        emit(ListOfInternetIssue());
       }
       debugPrint(e.toString());
       emit(ListInException());
     }
-
-
-
   }
-
 }

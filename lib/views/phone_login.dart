@@ -4,36 +4,36 @@ import 'package:tasky/cubitss/firebaseotp_cubit.dart';
 
 import 'dashboard_Screen.dart';
 
-class Phoneverfication extends StatefulWidget {
-  const Phoneverfication({Key? key}) : super(key: key);
+class PhoneVerification extends StatefulWidget {
+  const PhoneVerification({Key? key}) : super(key: key);
 
   @override
-  State<Phoneverfication> createState() => _PhoneverficationState();
+  State<PhoneVerification> createState() => PhoneVerificationState();
 }
 
-class _PhoneverficationState extends State<Phoneverfication> {
-  var phonecontroller = TextEditingController();
-  var otpcontroller = TextEditingController();
+class PhoneVerificationState extends State<PhoneVerification> {
+  var phoneController = TextEditingController();
+  var otpController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocListener<FirebaseotpCubit, FirebaseotpState>(
+      body: BlocListener<FirebaseOtpCubit, FirebaseOtpState>(
         listener: (context, state) {
-          if (state is FirebaseotpInitial) {
-            var snackk = const SnackBar(
+          if (state is FirebaseOtpInitial) {
+            var snacks = const SnackBar(
               content: Text('validating Phone number Sending otp '),
             );
-            ScaffoldMessenger.of(context).showSnackBar(snackk);
+            ScaffoldMessenger.of(context).showSnackBar(snacks);
           }
-          if (state is FirebaseotpLoaded) {
+          if (state is FirebaseOtpLoaded) {
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) => const DashboardScreen(true)));
           }
-          if (state is Firebaseotpautofetched) {
-            otpcontroller.text = state.otpfetchedauto;
+          if (state is FirebaseOtpAutoFetched) {
+            otpController.text = state.otpFetchedAuto;
           }
           if (state is FirebaseotpSentotpcodecheck) {
             Navigator.push(
@@ -41,11 +41,11 @@ class _PhoneverficationState extends State<Phoneverfication> {
                 MaterialPageRoute(
                     builder: (context) => const DashboardScreen(true)));
           }
-          if (state is FirebaseotpException) {
-            var snackk = SnackBar(
+          if (state is FirebaseOtpException) {
+            var snacks = SnackBar(
               content: Text(state.msg!),
             );
-            ScaffoldMessenger.of(context).showSnackBar(snackk);
+            ScaffoldMessenger.of(context).showSnackBar(snacks);
           }
         },
         child: ListView(
@@ -53,12 +53,13 @@ class _PhoneverficationState extends State<Phoneverfication> {
             const SizedBox(
               height: 300,
             ),
+            //phone number text form field
             Container(
                 decoration: BoxDecoration(
                     shape: BoxShape.rectangle,
                     border: Border.all(color: Colors.black)),
                 child: TextFormField(
-                  controller: phonecontroller,
+                  controller: phoneController,
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                     hintText: 'enter a valid phone number',
@@ -70,8 +71,8 @@ class _PhoneverficationState extends State<Phoneverfication> {
             MaterialButton(
               onPressed: () {
                 context
-                    .read<FirebaseotpCubit>()
-                    .fetchotp("+${phonecontroller.text}");
+                    .read<FirebaseOtpCubit>()
+                    .fetchOtp("+${phoneController.text}");
 
                 // FirebaseServices().fetchotp("+${phonecontroller.text}");
                 //  FirebaseServices().verify(otpcontroller, context);
@@ -84,17 +85,17 @@ class _PhoneverficationState extends State<Phoneverfication> {
                     shape: BoxShape.rectangle,
                     border: Border.all(color: Colors.black)),
                 child: TextFormField(
-                  controller: otpcontroller,
+                  controller: otpController,
                   onChanged: (e) {
                     if (e.length == 6) {
                       context
-                          .read<FirebaseotpCubit>()
-                          .verifyotpmanual(otpcontroller);
+                          .read<FirebaseOtpCubit>()
+                          .verifyOtpManual(otpController);
                     }
                   },
                   keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
-                    hintText: 'Your otp recieved',
+                    hintText: 'Your otp received',
                   ),
                 )),
           ],

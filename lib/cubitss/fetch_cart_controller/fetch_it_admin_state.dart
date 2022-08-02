@@ -4,11 +4,11 @@ part of 'fetch_it_admin_cubit.dart';
 abstract class FetchItAdminState {}
 
 class FetchItAdminInitial extends FetchItAdminState {}
+
 class FetchItAdminLoaded extends FetchItAdminState {
   //List<Cartmodel> ls=[];
-  List<Productscart> pr=[];
+  FirebaseProductsCart pr;
   FetchItAdminLoaded({required this.pr});
-
-
 }
+
 class FetchItChangeState extends FetchItAdminState {}

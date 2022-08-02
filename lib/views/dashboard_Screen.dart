@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasky/shared_component/firebase_services.dart';
@@ -13,14 +12,11 @@ class DashboardScreen extends StatefulWidget {
   const DashboardScreen(this.check, {Key? key}) : super(key: key);
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenState(check);
+  State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
- // final GlobalKey<ScaffoldState> _key = GlobalKey();
-  final bool check;
-
-_DashboardScreenState(this.check);
+  // final GlobalKey<ScaffoldState> _key = GlobalKey();
 
   List<String> images = [
     'assest/images/1.png',
@@ -50,7 +46,7 @@ _DashboardScreenState(this.check);
                 fit: BoxFit.fitHeight,
               ),
             ),
-            Positioned(left: 0.38.sw, child: Reusablescreen.reusabletext()),
+            Positioned(left: 0.38.sw, child: ReusableScreen.reUsableText()),
             Positioned(
                 left: 20,
                 top: 20,
@@ -73,6 +69,7 @@ _DashboardScreenState(this.check);
                 SizedBox(
                   height: 140.sp,
                 ),
+                // search field for invoice searching
                 Container(
                   height: 52,
                   width: 390,
@@ -120,62 +117,66 @@ _DashboardScreenState(this.check);
                     itemCount: images.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (BuildContext context, int index) {
-                      return Reusablescreen
-                          .reusablecircularavatar(images[index]);
+                      return ReusableScreen.reUsableCircularAvatar(
+                          images[index]);
                     },
                   ),
                 ),
                 Center(
-                    child:check==false? Text(" Logged in as ${FirebaseAuth.instance.currentUser!.displayName}")  :Text(" Logged in as ${FirebaseAuth.instance.currentUser!.phoneNumber}")),
-                MaterialButton(onPressed: () async {
-
-                 // FirebaseServices.Signout();
-                  FirebaseServices().googleSignOut();
-
-                } , color: Colors.red,child: const Text("Signout"),)
-
-                ,
-                (check== true)?
-                  Column(
-                    children: [
-                      MaterialButton(onPressed: (){
-Navigator.push(context, MaterialPageRoute(builder: (context)=>GroupChatScreen()));
-
-
-
-                       },
-
-                      color:  Colors.green,
-                      child: const Text('Join The group Chat '),
-                      ),
-                    ],
-                  )
-                    :
-
-
-                Column(
-                  children: [
-
-                    MaterialButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const ProductScreen()));
-                    },
-
-                      color: Colors.cyan,
-                      child: const Text('See Invoices '),
-                    ),
-                    MaterialButton(onPressed: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>const InvoiceScreen()));
-                    },
-
-                      color: Colors.red,
-                      child: const Text('See Invoices '),
-                    ),
-                  ],
-                )
-
-
-
-
+                    child: widget.check == false
+                        ? Text(
+                            " Logged in as ${FirebaseAuth.instance.currentUser!.displayName}")
+                        : Text(
+                            " Logged in as ${FirebaseAuth.instance.currentUser!.phoneNumber}")),
+                MaterialButton(
+                  onPressed: () async {
+                    FirebaseServices().googleSignOut();
+                  },
+                  color: Colors.red,
+                  child: const Text("SignOut"),
+                ),
+                (widget.check == true)
+                    ? Column(
+                        children: [
+                          MaterialButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const GroupChatScreen()));
+                            },
+                            color: Colors.green,
+                            child: const Text('Join The group Chat '),
+                          ),
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          MaterialButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ProductScreen()));
+                            },
+                            color: Colors.cyan,
+                            child: const Text('See Invoices '),
+                          ),
+                          MaterialButton(
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const InvoiceScreen()));
+                            },
+                            color: Colors.red,
+                            child: const Text('See Invoices '),
+                          ),
+                        ],
+                      )
               ],
             ),
           ],

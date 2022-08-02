@@ -4,25 +4,22 @@ part of 'firebasegroupmessaging_cubit.dart';
 abstract class FirebasegroupmessagingState {}
 
 class FirebasegroupmessagingInitial extends FirebasegroupmessagingState {}
+
 class FirebasegroupmessagingLoaded extends FirebasegroupmessagingState {
-  List<messageid> chats;
-  FirebasegroupmessagingLoaded( {required this.chats});
-
+  List<MessageId> chats;
+  FirebasegroupmessagingLoaded({required this.chats});
 }
+
 class FirebasegroupmessagingAdd extends FirebasegroupmessagingState {
-
   FirebasegroupmessagingAdd();
-
 }
+
 class FirebasegroupmessagingDelte extends FirebasegroupmessagingState {
-bool check;
-FirebasegroupmessagingDelte({required this.check});
-
-
-
+  bool check;
+  FirebasegroupmessagingDelte({required this.check});
 }
-class Firebasegroupmessagingupdate extends FirebasegroupmessagingState {
 
+class Firebasegroupmessagingupdate extends FirebasegroupmessagingState {
   bool check;
   Firebasegroupmessagingupdate({required this.check});
 }

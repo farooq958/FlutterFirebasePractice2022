@@ -1,5 +1,5 @@
-
 import 'package:flutter/material.dart';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tasky/shared_component/firebase_services.dart';
 
@@ -8,14 +8,17 @@ import 'package:tasky/views/phone_login.dart';
 
 import '../views/sign_up.dart';
 
-class Reusablescreen {
-  var Lemailcontroller = TextEditingController();
+class ReusableScreen {
+  //  l for login page controller
+  //  s for signup page controller
+  var lEmailController = TextEditingController();
 
-  var Lpaswdcontroller = TextEditingController();
-  var Semailcontroller = TextEditingController();
-  var Spaswdcontroller = TextEditingController();
+  var lPasswordController = TextEditingController();
+  var sEmailController = TextEditingController();
+  var sPasswordController = TextEditingController();
 
-  Widget reusablescreens(String Titlename, BuildContext context) {
+//Re-usable screen for  login and signup
+  Widget reUsableScreen(String titleName, BuildContext context) {
     return SizedBox(
       height: 1.sh,
       width: 1.sw * 3,
@@ -23,8 +26,10 @@ class Reusablescreen {
         physics: const NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         children: [
+          //main widget
           Stack(
             children: [
+              //image takes dynamic width height ..Parent widget
               FittedBox(
                   fit: BoxFit.fitHeight,
                   child: Image.asset(
@@ -34,7 +39,7 @@ class Reusablescreen {
                     fit: BoxFit.fitHeight,
                   )),
               Positioned(
-                  right: 100, top: 60, child: Reusablescreen.reusabletext())
+                  right: 100, top: 60, child: ReusableScreen.reUsableText())
             ],
           ),
           Padding(
@@ -52,7 +57,7 @@ class Reusablescreen {
                         children: [
                           Expanded(
                             child: Text(
-                              Titlename,
+                              titleName,
                               style: const TextStyle(
                                 fontFamily: 'Segoe UI',
                                 fontSize: 39.0,
@@ -125,26 +130,24 @@ class Reusablescreen {
                                     ),
                                   ),
                                 ),
-                                Expanded(child:
-                                Align(
+                                Expanded(
+                                    child: Align(
                                   alignment: Alignment.bottomLeft,
-
                                   child: InkWell(
-                                    onTap: ()
-                                    {
-                 FirebaseServices().signInWithTwitter();
+                                    onTap: () {
+                                      FirebaseServices().signInWithTwitter();
                                     },
                                     child: Container(
                                         width: 50.0,
                                         height: 45.0,
                                         decoration: BoxDecoration(
                                             border:
-                                            Border.all(color: Colors.red),
+                                                Border.all(color: Colors.red),
                                             shape: BoxShape.rectangle,
                                             borderRadius:
-                                            BorderRadius.circular(20)),
-                                        child:Center(child: Text(' Twitter'))
-                                    ),
+                                                BorderRadius.circular(20)),
+                                        child: const Center(
+                                            child: Text(' Twitter'))),
                                   ),
                                 ))
                               ],
@@ -188,9 +191,9 @@ class Reusablescreen {
                           ),
                         ),
                         child: TextField(
-                          controller: Titlename == 'Log In'
-                              ? Lemailcontroller
-                              : Semailcontroller,
+                          controller: titleName == 'Log In'
+                              ? lEmailController
+                              : sEmailController,
                         ),
                       ),
                     ),
@@ -230,9 +233,9 @@ class Reusablescreen {
                           ),
                         ),
                         child: TextFormField(
-                          controller: Titlename == 'Log In'
-                              ? Lpaswdcontroller
-                              : Spaswdcontroller,
+                          controller: titleName == 'Log In'
+                              ? lPasswordController
+                              : sPasswordController,
                         ),
                       ),
                     ),
@@ -248,11 +251,12 @@ class Reusablescreen {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const Phoneverfication()));
+                                    builder: (context) =>
+                                        const PhoneVerification()));
                           },
-                          child: Text('Login with Phone'),
                           color: Colors.white24,
                           shape: Border.all(color: Colors.red),
+                          child: const Text('Login with Phone'),
                         ),
                       ),
                     ),
@@ -262,15 +266,15 @@ class Reusablescreen {
                     child: Align(
                       child: InkWell(
                         onTap: () async {
-                          if (Titlename == "Sign Up") {
+                          if (titleName == "Sign Up") {
                             FirebaseServices.SighnUp(
-                                Semailcontroller, Spaswdcontroller, context);
+                                sEmailController, sPasswordController, context);
                             // Navigator.push(context, MaterialPageRoute(builder: (context)=> LogIn() ));
                           }
-                          if (Titlename == "Log In") {
+                          if (titleName == "Log In") {
                             FirebaseServices.SighnIn(
-                              Lemailcontroller,
-                              Lpaswdcontroller,
+                              lEmailController,
+                              lPasswordController,
                               context,
                             );
 
@@ -306,7 +310,7 @@ class Reusablescreen {
                           ),
                           child: Center(
                             child: Text(
-                              Titlename,
+                              titleName,
                               style: const TextStyle(
                                 fontFamily: 'Segoe UI',
                                 fontSize: 19.0,
@@ -326,16 +330,16 @@ class Reusablescreen {
                       child: FittedBox(
                         child: GestureDetector(
                           onTap: () {
-                            if (Titlename == "Log In") {
+                            if (titleName == "Log In") {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => Signup()));
+                                      builder: (context) => const Signup()));
                             } else {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => LogIn()));
+                                      builder: (context) => const LogIn()));
                             }
                           },
                           child: Text.rich(
@@ -347,7 +351,7 @@ class Reusablescreen {
                               ),
                               children: [
                                 TextSpan(
-                                  text: Titlename == "Log In"
+                                  text: titleName == "Log In"
                                       ? 'Don\'t have account yet? '
                                       : 'Already Have Account ',
                                   style: const TextStyle(
@@ -355,7 +359,7 @@ class Reusablescreen {
                                   ),
                                 ),
                                 TextSpan(
-                                  text: Titlename == "Log In"
+                                  text: titleName == "Log In"
                                       ? 'Sign Up'
                                       : "Log In",
                                   style: const TextStyle(
@@ -379,7 +383,8 @@ class Reusablescreen {
     );
   }
 
-  static Widget reusabletext() {
+//text for login signup screen
+  static Widget reUsableText() {
     return Text(
       'Meet',
       style: TextStyle(
@@ -396,11 +401,12 @@ class Reusablescreen {
     );
   }
 
-  static Widget reusablecircularavatar(String Imagepath) {
+//circular avatar on dashboard screen
+  static Widget reUsableCircularAvatar(String imagePath) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(35),
       child: Image.asset(
-        Imagepath,
+        imagePath,
         width: 70,
         height: 70,
         alignment: Alignment.center,

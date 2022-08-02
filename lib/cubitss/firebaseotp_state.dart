@@ -1,27 +1,20 @@
 part of 'firebaseotp_cubit.dart';
 
 @immutable
-abstract class FirebaseotpState {}
+abstract class FirebaseOtpState {}
 
-class FirebaseotpInitial extends FirebaseotpState {}
+class FirebaseOtpInitial extends FirebaseOtpState {}
 
-class FirebaseotpLoaded extends FirebaseotpState {}
+class FirebaseOtpLoaded extends FirebaseOtpState {}
 
-class FirebaseotpException extends FirebaseotpState {
-
+class FirebaseOtpException extends FirebaseOtpState {
   String? msg;
-  FirebaseotpException({required msg});
-
-}
-class Firebaseotpautofetched extends FirebaseotpState {
-
-  late String otpfetchedauto;
-  Firebaseotpautofetched({required otpfetchedauto});
-
-}
-class FirebaseotpSentotpcodecheck extends FirebaseotpState {
-
-
-
+  FirebaseOtpException({required msg});
 }
 
+class FirebaseOtpAutoFetched extends FirebaseOtpState {
+  final String otpFetchedAuto;
+  FirebaseOtpAutoFetched({required this.otpFetchedAuto});
+}
+
+class FirebaseotpSentotpcodecheck extends FirebaseOtpState {}

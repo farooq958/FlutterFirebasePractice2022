@@ -18,14 +18,12 @@ import 'cubitss/quantity_controller/quantity_controller_cubit.dart';
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(DevicePreview(
-
-    builder: (context) => const MyApp(), // Wrap your app
-  ),);
+  runApp(
+    DevicePreview(
+      builder: (context) => const MyApp(), // Wrap your app
+    ),
+  );
 }
-
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -34,30 +32,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-
       designSize: const Size(428, 976),
       minTextAdapt: true,
       splitScreenMode: true,
-
       useInheritedMediaQuery: true,
-
-      builder: ( context,  child) {
-
+      builder: (context, child) {
         return MultiBlocProvider(
-
-
           providers: [
-
-            BlocProvider<FirebaseotpCubit>(
-                create: (BuildContext context) => FirebaseotpCubit()),
+            BlocProvider<FirebaseOtpCubit>(
+                create: (BuildContext context) => FirebaseOtpCubit()),
             BlocProvider<FirebasegroupmessagingCubit>(
-                create: (BuildContext context) => FirebasegroupmessagingCubit()),
+                create: (BuildContext context) =>
+                    FirebasegroupmessagingCubit()),
             BlocProvider<InvoiceCubit>(
                 create: (BuildContext context) => InvoiceCubit()),
             BlocProvider<FetchcontrollerCubit>(
                 create: (BuildContext context) => FetchcontrollerCubit()),
             BlocProvider<ProductscubitcontrollerCubit>(
-                create: (BuildContext context) => ProductscubitcontrollerCubit()),
+                create: (BuildContext context) =>
+                    ProductscubitcontrollerCubit()),
             BlocProvider<QuantityControllerCubit>(
                 create: (BuildContext context) => QuantityControllerCubit()),
             BlocProvider<CartControllerCubit>(
@@ -68,18 +61,15 @@ class MyApp extends StatelessWidget {
                 create: (BuildContext context) => FetchItAdminCubit()),
           ],
           child: MaterialApp(
-          title: 'Flutter Demo',
+            title: 'Flutter Demo',
             builder: DevicePreview.appBuilder,
             useInheritedMediaQuery: true,
             debugShowCheckedModeBanner: false,
-          home:child,
+            home: child,
           ),
         );
-        },
-    child:  const Signup(),
+      },
+      child: const Signup(),
     );
-
   }
 }
-
-

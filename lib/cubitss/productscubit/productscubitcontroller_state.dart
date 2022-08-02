@@ -4,14 +4,17 @@ part of 'productscubitcontroller_cubit.dart';
 abstract class ProductscubitcontrollerState {}
 
 class ProductscubitcontrollerInitial extends ProductscubitcontrollerState {}
+
 class ListOfProductsLoaded extends ProductscubitcontrollerState {
-  Products? prod ;
+  Products? prod;
 
   ListOfProductsLoaded({required this.prod});
-
-
 }
-class ListOfinternetissue extends ProductscubitcontrollerState {}
-class ListofInternalSever extends ProductscubitcontrollerState {}
-class ListofImageError extends ProductscubitcontrollerState {}
+
+class ListOfInternetIssue extends ProductscubitcontrollerState {}
+
+class ListOfInternalSever extends ProductscubitcontrollerState {}
+
+class ListOfImageError extends ProductscubitcontrollerState {}
+
 class ListInException extends ProductscubitcontrollerState {}

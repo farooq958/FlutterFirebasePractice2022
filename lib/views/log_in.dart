@@ -22,10 +22,11 @@ class _LogInState extends State<LogIn> {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
+              //
               return const DashboardScreen(false);
             } else {
-              var reus = Reusablescreen();
-              return reus.reusablescreens("Log In", context);
+              var reus = ReusableScreen();
+              return reus.reUsableScreen("Log In", context);
             }
           },
         ),

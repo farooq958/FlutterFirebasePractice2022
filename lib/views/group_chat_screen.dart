@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -12,14 +11,14 @@ class GroupChatScreen extends StatefulWidget {
 }
 
 class _GroupChatScreenState extends State<GroupChatScreen> {
-  final TextEditingController messageeditingcontroller =
+  final TextEditingController messageEditingController =
       TextEditingController();
 
   String? username = FirebaseAuth.instance.currentUser!.phoneNumber;
 
   @override
   void initState() {
-    context.read<FirebasegroupmessagingCubit>().getchatmessages();
+    context.read<FirebasegroupmessagingCubit>().getChatMessages();
     super.initState();
   }
 
@@ -27,23 +26,24 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Converstion Screen "),
+        title: const Text("Conversation Screen "),
       ),
       body: Column(
         children: [
-        Expanded( flex: 4, child:   chatMessages(context)),
+          Expanded(flex: 4, child: chatMessages(context)),
           Expanded(
             child: Container(
               alignment: Alignment.bottomCenter,
               width: MediaQuery.of(context).size.width,
               child: Container(
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                 color: Colors.grey,
                 child: Row(
                   children: [
                     Expanded(
                         child: TextField(
-                      controller: messageeditingcontroller,
+                      controller: messageEditingController,
                       decoration: const InputDecoration(
                           hintText: "Message ...",
                           hintStyle: TextStyle(
@@ -68,7 +68,7 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
                                   begin: FractionalOffset.topLeft,
                                   end: FractionalOffset.bottomRight),
                               borderRadius: BorderRadius.circular(40)),
-                          padding: EdgeInsets.all(12),
+                          padding: const EdgeInsets.all(12),
                           child: Image.asset(
                             "assest/images/send.png",
                             height: 25,
@@ -85,33 +85,36 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
     );
   }
 
+// chat messages
   chatMessages(BuildContext context) {
     return BlocBuilder<FirebasegroupmessagingCubit,
         FirebasegroupmessagingState>(
       builder: (context, state) {
-        if (state is FirebasegroupmessagingLoaded ) {
-
+        if (state is FirebasegroupmessagingLoaded) {
           return ListView.builder(
             reverse: true,
             itemBuilder: (context, index) {
               return MessageTile(
-
-                  message: state.chats[index].msg.message,
-                  sendByMe: username == state.chats[index].msg.sendBy, Id: state.chats[index].Id,);
+                message: state.chats[index].msg.message,
+                sendByMe: username == state.chats[index].msg.sendBy,
+                iD: state.chats[index].id,
+              );
             },
             itemCount: state.chats.length,
           );
         }
-        if (state is FirebasegroupmessagingInitial)
-          return CircularProgressIndicator();
-       if (state is FirebasegroupmessagingDelte)
-        {
-          if(state.check==true){
-          context.read<FirebasegroupmessagingCubit>().getchatmessages();
-          }
-
+        if (state is FirebasegroupmessagingInitial) {
+          return const CircularProgressIndicator();
         }
-         return Container(height: 0,width: 0,);
+        if (state is FirebasegroupmessagingDelte) {
+          if (state.check == true) {
+            context.read<FirebasegroupmessagingCubit>().getChatMessages();
+          }
+        }
+        return const SizedBox(
+          height: 0,
+          width: 0,
+        );
       },
     );
   }
@@ -119,29 +122,32 @@ class _GroupChatScreenState extends State<GroupChatScreen> {
   void addMessage() {
     Map<String, dynamic> chatMessageMap = {
       "sendBy": username,
-      "message": messageeditingcontroller.text,
+      "message": messageEditingController.text,
       'time': DateTime.now().millisecondsSinceEpoch,
-
     };
-    context.read<FirebasegroupmessagingCubit>().admessage(chatMessageMap);
+    context.read<FirebasegroupmessagingCubit>().addMessage(chatMessageMap);
   }
 }
 
+//message show widget
 class MessageTile extends StatelessWidget {
   final String message;
   final bool sendByMe;
-  final String Id;
+  final String iD;
 
-  MessageTile({required this.message, required this.sendByMe,required this.Id});
-
+  const MessageTile(
+      {Key? key,
+      required this.message,
+      required this.sendByMe,
+      required this.iD})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
-    var updatedcontroller= TextEditingController(text: message);
+    var updatedController = TextEditingController(text: message);
     Map<String, dynamic> chatMessageMap = {
       "sendBy": FirebaseAuth.instance.currentUser!.phoneNumber,
-      "message": updatedcontroller.text,
+      "message": updatedController.text,
       'time': DateTime.now().millisecondsSinceEpoch,
-
     };
     return SingleChildScrollView(
       child: Container(
@@ -152,9 +158,11 @@ class MessageTile extends StatelessWidget {
             right: sendByMe ? 24 : 0),
         alignment: sendByMe ? Alignment.centerRight : Alignment.centerLeft,
         child: Container(
-          margin:
-              sendByMe ? const EdgeInsets.only(left: 30) : const EdgeInsets.only(right: 30),
-          padding: const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
+          margin: sendByMe
+              ? const EdgeInsets.only(left: 30)
+              : const EdgeInsets.only(right: 30),
+          padding:
+              const EdgeInsets.only(top: 17, bottom: 17, left: 20, right: 20),
           decoration: BoxDecoration(
               borderRadius: sendByMe
                   ? const BorderRadius.only(
@@ -171,55 +179,43 @@ class MessageTile extends StatelessWidget {
                     : [Colors.black, Colors.grey],
               )),
           child: GestureDetector(
-            onDoubleTap: ()
-            {
-              showDialog(context: context, builder: (context)=>AlertDialog(
-
-                content:SizedBox(
-                  height: 200,
-                  child: TextFormField(
-                    controller: updatedcontroller,
-                  ),
-
-                ) ,
-                actions:  [
-                  GestureDetector(onTap:(){
-
-                    if(sendByMe) {
-                      context.read<FirebasegroupmessagingCubit>().updateit(
-                          chatMessageMap, Id);
-                      Navigator.pop(context);
-                    }
-                  },child: Icon(Icons.add))
-
-                ],
-
-              )
-
-
-
-
-
-
-
-              );
-
+            onDoubleTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                        content: SizedBox(
+                          height: 200,
+                          child: TextFormField(
+                            controller: updatedController,
+                          ),
+                        ),
+                        actions: [
+                          GestureDetector(
+                              onTap: () {
+                                if (sendByMe) {
+                                  context
+                                      .read<FirebasegroupmessagingCubit>()
+                                      .updateIt(chatMessageMap, iD);
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Icon(Icons.add))
+                        ],
+                      ));
             },
-            onLongPress: ()
-            {
-              if(sendByMe)
-                {
-                  var snakk = SnackBar(content: const Text('Do You want to delte this message '),action: SnackBarAction(label: 'Yes', onPressed: () {
-
-                    context.read<FirebasegroupmessagingCubit>().delteit(Id);
-
-                  },
-
-
-                  ) ,);
-ScaffoldMessenger.of(context).showSnackBar(snakk);
-                }
-
+            onLongPress: () {
+              if (sendByMe) {
+                var snack = SnackBar(
+                  content: const Text('Do You want to delete this message '),
+                  action: SnackBarAction(
+                    label: 'Yes',
+                    onPressed: () {
+                      context.read<FirebasegroupmessagingCubit>().deleteIt(iD);
+                    },
+                  ),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snack);
+              }
             },
             child: Text(message,
                 textAlign: TextAlign.start,

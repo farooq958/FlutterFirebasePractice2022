@@ -1,7 +1,5 @@
 import '../model.dart';
 
-class productapicontroller{
-
- static late String? productlist ;
-
+class ProductApiController {
+  static late String? productlist;
 }

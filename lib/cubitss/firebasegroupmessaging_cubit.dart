@@ -13,89 +13,62 @@ part 'firebasegroupmessaging_state.dart';
 class FirebasegroupmessagingCubit extends Cubit<FirebasegroupmessagingState> {
   FirebasegroupmessagingCubit() : super(FirebasegroupmessagingInitial());
 
-getchatmessages()
-{List<messageid> msg=[] ;
-String id ='';
-try{
-  emit(FirebasegroupmessagingInitial());
-  FirebaseFirestore.instance
-      .collection("UserGroup")
-      .orderBy('time').snapshots().listen((event) {
-msg.clear();
-    for(QueryDocumentSnapshot querysnapshot in event.docs)
-    {
-      debugPrint( jsonEncode( querysnapshot.data()));
-String id= querysnapshot.id;
+  getChatMessages() {
+    List<MessageId> msg = [];
+
+    try {
+      emit(FirebasegroupmessagingInitial());
+      FirebaseFirestore.instance
+          .collection("UserGroup")
+          .orderBy('time')
+          .snapshots()
+          .listen((event) {
+        msg.clear();
+        for (QueryDocumentSnapshot querysnapshot in event.docs) {
+          debugPrint(jsonEncode(querysnapshot.data()));
+          String id = querysnapshot.id;
 // msg.add(querysnapshot.data()['']);
-      var data = Messagemodel.fromRawJson(jsonEncode( querysnapshot.data()));
+          var data = MessageModel.fromRawJson(jsonEncode(querysnapshot.data()));
 
-      msg.add(messageid(Id: id, msg: data));
+          msg.add(MessageId(id: id, msg: data));
+        }
+        msg = msg.reversed.toList();
+        emit(FirebasegroupmessagingLoaded(chats: msg));
+      });
+    } catch (e) {
+      if (e is SocketException) {
+        debugPrint(e.message);
+      }
+      if (e is FirebaseException) {
+        debugPrint(e.message);
+      }
     }
-    msg=msg.reversed.toList();
-emit(FirebasegroupmessagingLoaded(chats: msg));
-  });
+  }
 
-
-
-
-}
- catch(e)
-{
-  if (e is SocketException)
-    {
-      debugPrint(e.message);
+  addMessage(chatMessageData) {
+    try {
+      Firebaserepo().addMessage(chatMessageData);
+      emit(FirebasegroupmessagingAdd());
+    } catch (e) {
+      if (e is FirebaseException) debugPrint(e.message);
     }
-  if (e is FirebaseException)
-    {
+  }
 
-      debugPrint(e.message);
-
+  deleteIt(id) async {
+    try {
+      var check = await Firebaserepo().deleteMessage(id);
+      emit(FirebasegroupmessagingDelte(check: check));
+    } catch (e) {
+      debugPrint(e.toString());
     }
-
-}
-
-}
-
-admessage(chatMessageData)
-{
-try{
-   Firebaserepo().Addmessage(chatMessageData);
-  emit(FirebasegroupmessagingAdd());
-
-}
-catch(e)
-  {
-    if(e is FirebaseException)
-    debugPrint(e.message);
   }
 
-}
-delteit(id)
-async {
-
-  try{
-    var check= await Firebaserepo().DelteMessage(id);
-    emit(FirebasegroupmessagingDelte(check:check));
+  updateIt(mesg, id) async {
+    try {
+      var check = await Firebaserepo.updated(mesg, id);
+      emit(Firebasegroupmessagingupdate(check: check));
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
-  catch(e)
-  {
-    debugPrint(e.toString());
-  }
-
-
-}
-updateit(mesg,id)
-async
-{
-  try{
-    var check= await Firebaserepo.updated(mesg, id);
-    emit(Firebasegroupmessagingupdate(check:check));
-  }
-  catch(e)
-  {
-    debugPrint(e.toString());
-  }
-
-
-}
 }
